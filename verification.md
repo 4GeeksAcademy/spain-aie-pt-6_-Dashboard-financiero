@@ -135,15 +135,16 @@ Este documento contrasta las afirmaciones del resumen del proyecto con el códig
     14. `test_metrics_comparison_returns_delta_fields` (línea 157)
     15. `test_metrics_alerts_returns_anomaly_candidates` (línea 173)
 
-- **Tests de frontend (`frontend/src/lib/financial-utils.test.ts`): 5 tests** (correcto)
-  - 5 llamadas `it(...)`:
+- **Tests de frontend (`frontend/src/lib/financial-utils.test.ts`): 6 tests** (declarados; no ejecutados)
+  - 6 llamadas `it(...)`:
     1. `"calculates totals and profit values"` (línea 36)
     2. `"returns 0 profitPercent when there is no income"` (línea 47)
     3. `"returns chronological year-month points with aggregated totals"` (línea 64)
-    4. `"formats currency without decimals"` (línea 107)
-    5. `"formats percent with one decimal"` (línea 111)
+    4. `"returns a zero profit margin for a month with no income"` (línea 105)
+    5. `"formats currency without decimals"` (línea 128)
+    6. `"formats percent with one decimal"` (línea 132)
 
-- **Total: 20 tests declarados** (15 backend + 5 frontend).
+  - **Total: 21 tests declarados** (15 backend + 6 frontend).
 
 ---
 
@@ -159,12 +160,12 @@ Este documento contrasta las afirmaciones del resumen del proyecto con el códig
 | 9 endpoints en routes.py | `backend/app/routes.py` | 243, 248, 262, 268, 287, 305, 342, 362, 378 |
 | Proxy Vite `/api` → `http://backend:8000` | `frontend/vite.config.ts` | 10-15 |
 | 15 tests backend | `backend/tests/test_routes.py` | 12, 19, 29, 36, 52, 62, 72, 81, 90, 104, 121, 133, 144, 157, 173 |
-| 5 tests frontend | `frontend/src/lib/financial-utils.test.ts` | 36, 47, 64, 107, 111 |
+| 6 tests frontend | `frontend/src/lib/financial-utils.test.ts` | 36, 47, 64, 105, 128, 132 |
 
 ---
 
 ## 5. Limitaciones
 
-- **El conteo de tests refleja los tests definidos en el código, no su estado de ejecución.** Que existan 20 tests declarados no significa que todos se hayan ejecutado correctamente o que pasen en el entorno actual. Para verificarlo sería necesario ejecutar `pytest` en el backend y `npm test` en el frontend.
+- **El conteo de tests refleja los tests definidos en el código, no su estado de ejecución.** Que existan 21 tests declarados no significa que todos se hayan ejecutado correctamente o que pasen en el entorno actual. Para verificarlo sería necesario ejecutar `pytest` en el backend y `npm test` en el frontend.
 - Este documento verifica únicamente las afirmaciones del resumen. No cubre la totalidad del código ni posibles bugs o incoherencias no mencionadas en el resumen original.
 - La ausencia de importación de `mock-data.ts` se ha verificado mediante búsqueda textual; no se ha analizado la posibilidad de carga dinámica o indirecta a través de otros mecanismos (p. ej., `require.context` o construcción dinámica de rutas), aunque no hay indicios de ello en el código.

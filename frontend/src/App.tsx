@@ -12,8 +12,8 @@ import { computeKPIs, computeMonthlyData } from "@/lib/financial-utils";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "";
 
-async function fetchFinancialData(): Promise<FinancialMovement[]> {
-  const response = await fetch(`${API_BASE_URL}/api/metrics`);
+async function fetchFinancialData(signal: AbortSignal): Promise<FinancialMovement[]> {
+  const response = await fetch(`${API_BASE_URL}/api/metrics`, { signal });
   if (!response.ok) {
     throw new Error(`Failed to fetch financial data: ${response.status}`);
   }
@@ -21,26 +21,33 @@ async function fetchFinancialData(): Promise<FinancialMovement[]> {
 }
 
 function App() {
-  const [metrics, setMetrics] = useState<KPIMetrics | null>(null);
-  const [monthlyData, setMonthlyData] = useState<MonthlyDataPoint[]>([]);
+  const [movements, setMovements] = useState<FinancialMovement[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchFinancialData()
-      .then((movements) => {
-        setMetrics(computeKPIs(movements));
-        setMonthlyData(computeMonthlyData(movements));
-      })
-      .catch(() => {
+    const controller = new AbortController();
+
+    fetchFinancialData(controller.signal)
+      .then(setMovements)
+      .catch((cause: unknown) => {
+        if (cause instanceof Error && cause.name === "AbortError") return;
+
         setError(
           "No se pudo cargar la informacion financiera. Revisa la API de backend.",
         );
       })
       .finally(() => {
-        setLoading(false);
+        if (!controller.signal.aborted) setLoading(false);
       });
+
+    return () => controller.abort();
   }, []);
+
+  const metrics = movements ? computeKPIs(movements) : null;
+  const monthlyData: MonthlyDataPoint[] = movements
+    ? computeMonthlyData(movements)
+    : [];
 
   return (
     <main className="dark min-h-screen bg-background text-foreground">
@@ -49,17 +56,22 @@ function App() {
           <DashboardHeader period="2024 - Full Year" />
 
           {error ? (
-            <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive-foreground">
+            <div
+              role="alert"
+              lang="es"
+              className="rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive-foreground"
+            >
               {error}
             </div>
           ) : null}
 
-          <section aria-label="Key performance indicators">
+          <section aria-label="Key performance indicators" aria-busy={loading}>
             <KPIRow metrics={metrics} loading={loading} />
           </section>
 
           <section
             aria-label="Financial charts"
+            aria-busy={loading}
             className="grid grid-cols-1 gap-4 xl:grid-cols-2"
           >
             <IncomeOutcomeChart data={monthlyData} loading={loading} />

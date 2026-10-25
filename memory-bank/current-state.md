@@ -2,7 +2,7 @@
 
 ## Estado general
 
-El repositorio ha sido analizado en profundidad durante una sesión de onboarding. Se han documentado reglas para agentes de IA, se ha verificado el resumen del proyecto y se ha creado este banco de memoria. **No se ha modificado ningún archivo de código, configuración ni documentación preexistente.**
+El onboarding documentó reglas para agentes de IA, verificó el resumen del proyecto y creó este banco de memoria. Después se aplicaron las skills al frontend en seis archivos de código/tests. El detalle de esos cambios y sus verificaciones pendientes está en `memory-bank/progress.md`.
 
 ## Endpoints de la API (9 endpoints)
 
@@ -42,11 +42,11 @@ Documentadas en `verification.md` (raíz del repositorio):
 | Frontend obtiene datos por API y no usa mock-data.ts | ✅ VERIFICADO (mock-data.ts existe pero no es importado) |
 | Existen 9 endpoints en routes.py | ✅ VERIFICADO |
 | Vite proxy dirige /api → backend:8000 | ✅ VERIFICADO |
-| **Conteo de tests: 8 backend + 5 frontend** | ❌ **INCORRECTO** → la cifra real es **15 backend + 5 frontend = 20 tests** |
+| Tests declarados | 15 backend + 6 frontend = 21; no se ha confirmado su ejecución |
 
 ### Corrección del recuento de tests
 
-El resumen inicial afirmaba 8 tests de backend. La cifra real es **15 tests** en `backend/tests/test_routes.py`. Adicionalmente hay **5 tests** en `frontend/src/lib/financial-utils.test.ts`. Total: **20 tests declarados**.
+El resumen inicial afirmaba 8 tests de backend. La cifra definida actualmente es **15 tests** en `backend/tests/test_routes.py` y **6 tests** en `frontend/src/lib/financial-utils.test.ts`, para un total de **21 tests declarados**.
 
 **No se ha ejecutado ninguna de las dos baterías**, por lo que no se puede afirmar que los tests pasen.
 
@@ -64,7 +64,7 @@ El resumen inicial afirmaba 8 tests de backend. La cifra real es **15 tests** en
 ## Tareas pendientes
 
 - [ ] Ejecutar los tests de backend (`pytest` desde `backend/`) para confirmar que los 15 tests pasan.
-- [ ] Ejecutar los tests de frontend (`npm test` desde `frontend/`) para confirmar que los 5 tests pasan.
+- [ ] Ejecutar los tests de frontend (`npm test` desde `frontend/`) para confirmar que los 6 tests pasan.
 - [ ] Decidir si `mock-data.ts` debe eliminarse o integrarse como alternativa offline.
 - [ ] Decidir si `components.json` (shadcn/ui) debe eliminarse o integrarse.
 - [ ] Crear `frontend/.env.example` si se desea mantener el workflow de `VITE_API_BASE_URL` documentado en el README.

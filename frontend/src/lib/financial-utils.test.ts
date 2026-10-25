@@ -101,6 +101,27 @@ describe("computeMonthlyData", () => {
       profitPercent: 100,
     });
   });
+
+  it("returns a zero profit margin for a month with no income", () => {
+    const monthlyData = computeMonthlyData([
+      {
+        create_date: "2024-03-05",
+        amount: 350,
+        operation_type: "outcome",
+        category: "operational",
+        business_type: "B2B",
+      },
+    ]);
+
+    expect(monthlyData).toEqual([
+      {
+        month: "Mar 2024",
+        income: 0,
+        outcome: 350,
+        profitPercent: 0,
+      },
+    ]);
+  });
 });
 
 describe("formatters", () => {
