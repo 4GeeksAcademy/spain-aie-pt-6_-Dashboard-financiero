@@ -76,7 +76,7 @@ pytest
 - Framework: pytest con `TestClient` de FastAPI
 - 15 tests que cubren: generación de datos, filtros por fecha/categoría/tipo, endpoints (`/health`, `/api/metrics`, `/api/metrics/b2b`, `/api/metrics/b2c`, etc.)
 
-### Frontend (5 tests)
+### Frontend (6 tests)
 
 ```bash
 # Desde el directorio frontend/
@@ -87,6 +87,6 @@ npm run test:coverage  # vitest run --coverage
 
 - Archivo: `frontend/src/lib/financial-utils.test.ts`
 - Framework: Vitest
-- 5 tests que cubren: `computeKPIs()`, `computeMonthlyData()`, `formatCurrency()`, `formatPercent()`
+- 6 tests que cubren: `computeKPIs()`, `computeMonthlyData()` (incluido un mes sin ingresos), `formatCurrency()`, `formatPercent()`
 
 **Nota:** Estos son los tests declarados en el código. No se ha confirmado que todos pasen porque no se han ejecutado en esta sesión.
